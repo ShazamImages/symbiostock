@@ -665,7 +665,7 @@ if(isset($_GET[ 'page' ])){
 			// General settings
 			runtimes : 'gears,flash,silverlight,browserplus,html5',
 			url : '<?php
-			echo symbiostock_CLASSDIR;
+			echo WP_CONTENT_URL;
 	?>/plupload/uploads/upload.php',
 			max_file_size : '1000mb',
 			unique_names : false,
@@ -677,12 +677,12 @@ if(isset($_GET[ 'page' ])){
 	
 			// Flash settings
 			flash_swf_url : '<?php
-			echo symbiostock_CLASSDIR;
+			echo WP_CONTENT_URL;
 	?>/plupload/js/plupload.flash.swf',
 	
 			// Silverlight settings
 			silverlight_xap_url : '<?php
-			echo symbiostock_CLASSDIR;
+			echo WP_CONTENT_URL;
 	?>/plupload/js/plupload.silverlight.xap'
 		});
 	

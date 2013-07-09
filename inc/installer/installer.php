@@ -273,7 +273,16 @@ activate_plugin($symbiostock_plugin_path . 'symbiostock_emailer.php');
 $related_posts_plugin =  dirname(__FILE__) . '/related-posts-by-taxonomy.zip';
 WP_Filesystem();
 unzip_file( $related_posts_plugin, $symbiostock_plugin_path  );
+
 activate_plugin($symbiostock_plugin_path . 'related-posts-by-taxonomy/related-posts-by-taxonomy.php');
+
+//move uploads directory
+//we create a new upload directory due to some strange new issue regarding the original directory being randomnly blocked.
+//wordpress.org/support/topic/theme-directory-blocked-off-from-public-access
+if(!is_dir(WP_CONTENT_DIR.'/plupload.zip')){
+	unzip_file( dirname(__FILE__) . '/plupload.zip', WP_CONTENT_DIR );
+}
+
 //---------------------------------------------------------------------------------------
 //notify Symbiostock of successful deployment
 

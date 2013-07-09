@@ -662,7 +662,7 @@ class symbiostock_image_processor
 		if($revisit == false)  {   
 			$this->user_info = get_currentuserinfo();
 			
-			$this->upload_dir = get_template_directory() . '/inc/classes/plupload/uploads/';
+			$this->upload_dir = WP_CONTENT_DIR . "/plupload/uploads/";
 			
 			$this->build_file_list();
 		} else {

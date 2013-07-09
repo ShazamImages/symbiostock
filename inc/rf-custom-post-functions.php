@@ -617,13 +617,6 @@ function register_symbiostock_image_submenu_page( )
 if(isset($_GET[ 'page' ])){
 	
 	if ( is_admin() && $_GET[ 'page' ] == 'symbiostock-upload-images' ) {
-		//do stuff to get jquery again, but from google for some reason...
-		
-		wp_deregister_script( 'jquery' );
-		
-		wp_register_script( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js' );
-		
-		wp_enqueue_script( 'jquery' );
 		
 		//get browserplus
 		
@@ -633,20 +626,20 @@ if(isset($_GET[ 'page' ])){
 		
 		//get plupload css
 		
-		wp_register_style( 'symbiostock_plupload_css', symbiostock_CLASSDIR . '/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css', false, '1.0.0' );
+		wp_register_style( 'symbiostock_plupload_css', WP_CONTENT_URL . '/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css', false, '1.0.0' );
 		
 		wp_enqueue_style( 'symbiostock_plupload_css' );
 		
 		
 		//Load plupload and all it's runtimes and finally the jQuery queue widget
 		
-		wp_register_script( 'symbiostock_plupload_full_js', symbiostock_CLASSDIR . '/plupload/js/plupload.full.js', array(
+		wp_register_script( 'symbiostock_plupload_full_js', WP_CONTENT_URL . '/plupload/js/plupload.full.js', array(
 			 'jquery' 
 		), '1.0', false );
 		
 		wp_enqueue_script( 'symbiostock_plupload_full_js' );
 		
-		wp_register_script( 'symbiostock_plupload_queue', symbiostock_CLASSDIR . '/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js', array(
+		wp_register_script( 'symbiostock_plupload_queue', WP_CONTENT_URL . '/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js', array(
 			 'jquery' 
 		), '1.0', false );
 		
@@ -660,7 +653,7 @@ if(isset($_GET[ 'page' ])){
 	?>
 <script type="text/javascript">
 	// Convert divs to queue widgets when the DOM is ready
-	$(function() {
+	jQuery(function($) {
 		$("#uploader").pluploadQueue({
 			// General settings
 			runtimes : 'gears,flash,silverlight,browserplus,html5',

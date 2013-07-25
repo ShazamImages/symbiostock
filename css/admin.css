@@ -229,4 +229,8 @@ th.symbiostock_network_site_header{
 .symbiostock_help .help_topics ul li{
 	
 	border-bottom: 1px solid #CCC;
-	}		
+	}
+	
+.symbiostock-author-settings {
+	max-width: 600px;
+	}			

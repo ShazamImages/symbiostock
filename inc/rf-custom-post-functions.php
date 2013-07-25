@@ -18,7 +18,7 @@ function symbiostock_image_manager_register( )
         'not_found' => 'No image found',
         'not_found_in_trash' => 'No images found in Trash',
         'parent_item_colon' => '',
-        'menu_name' => 'Royalty Free Images', 
+        'menu_name' => 'Stock Images', 
 		'not_found' =>  __('No images found'),
     );
     
@@ -124,10 +124,12 @@ function symbiostock_image_manager_meta_options( )
 {
     global $post;
     
+	isset($post->ID)? $image_id = $post->ID : $image_id = $_POST['image_id'];
+	
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
         return $post_id;
     
-    $custom           = get_post_custom( $post->ID );
+    $custom           = get_post_custom( $image_id );
     $price_bloggee    = $custom[ 'price_bloggee' ][ 0 ];
     $price_small      = $custom[ 'price_small' ][ 0 ];
     $price_medium     = $custom[ 'price_medium' ][ 0 ];
@@ -153,7 +155,7 @@ function symbiostock_image_manager_meta_options( )
 	$symbiostock_rank     = $custom[ 'symbiostock_rank' ][ 0 ];	
 	
 	//size info
-	$size_info = get_post_meta($post->ID, 'size_info');
+	$size_info = get_post_meta($image_id, 'size_info');
 	$sizes = maybe_unserialize($size_info[0]);
 	
 	$sizes['large']['width'] > $sizes['large']['height'] ? $symbiostock_large_size = $sizes['large']['width'] : $symbiostock_large_size = $sizes['large']['height'];
@@ -222,8 +224,8 @@ $symbiostock_rank == '3' ? $symbiostock_rank_3 = 'selected="selected"' : $symbio
 
 <?php
 	$locked == 'locked' ? $checked = 'checked="checked"' : $checked = '';
-	 
-	 echo '<img class="alignright preview_pic" alt="Image Preview" src="' . $custom['symbiostock_preview'][0] . '" />';
+	 if(!isset($_POST['image_id']))
+	 	echo '<img class="alignright preview_pic" alt="Image Preview" src="' . $custom['symbiostock_preview'][0] . '" />';
 ?>
 <div>
     <label>Bloggee: </label>
@@ -275,7 +277,6 @@ $symbiostock_rank == '3' ? $symbiostock_rank_3 = 'selected="selected"' : $symbio
 </div>
 
 <br />
-
 
 <div>
 	
@@ -429,9 +430,11 @@ function symbiostock_image_manager_save_options( )
     global $post;
 	global $post_type;
 	
-	if($post_type != 'image')
-		return;
-		
+	if($post_type != 'image'){		
+		if(!isset($_POST['image_id']))
+			return;		
+		}		
+	
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
         return $post_id;
         
@@ -440,50 +443,113 @@ function symbiostock_image_manager_save_options( )
 	
     else {
 		
-        update_post_meta( $post->ID, 'price_bloggee', $_POST[ 'price_bloggee' ] );        
-        update_post_meta( $post->ID, 'price_small', $_POST[ 'price_small' ] );        
-        update_post_meta( $post->ID, 'price_medium', $_POST[ 'price_medium' ] );        
-        update_post_meta( $post->ID, 'price_large', $_POST[ 'price_large' ] );        
-        update_post_meta( $post->ID, 'price_vector', $_POST[ 'price_vector' ] );		
-		update_post_meta( $post->ID, 'price_zip', $_POST[ 'price_zip' ] );        
-        update_post_meta( $post->ID, 'discount_percent', $_POST[ 'discount_percent' ] );        
-        update_post_meta( $post->ID, 'exclusive', $_POST[ 'exclusive' ] );		
-		update_post_meta( $post->ID, 'locked', $_POST[ 'locked' ] );		
-		update_post_meta( $post->ID, 'live', $_POST[ 'live' ] );		
+				
+		isset($post->ID)? $image_id = $post->ID : $image_id = $_POST['image_id'];
 		
-		//availability options symbiostock_  $size _available		
-		update_post_meta( $post->ID, 'symbiostock_bloggee_available', $_POST[ 'symbiostock_bloggee_available' ] );		
-		update_post_meta( $post->ID, 'symbiostock_small_available', $_POST[ 'symbiostock_small_available' ] );		
-		update_post_meta( $post->ID, 'symbiostock_medium_available', $_POST[ 'symbiostock_medium_available' ] );		
-		update_post_meta( $post->ID, 'symbiostock_large_available', $_POST[ 'symbiostock_large_available' ] );		
-		update_post_meta( $post->ID, 'symbiostock_vector_available', $_POST[ 'symbiostock_vector_available' ] );		
-		update_post_meta( $post->ID, 'symbiostock_zip_available', $_POST[ 'symbiostock_zip_available' ] );	
+		if(isset($_POST[ 'price_bloggee' ] ))
+       		update_post_meta( $image_id, 'price_bloggee', $_POST[ 'price_bloggee' ] ); 
+		
+		if(isset($_POST[ 'price_small' ] ))	       
+        	update_post_meta( $image_id, 'price_small', $_POST[ 'price_small' ] ); 
+		
+		if(isset($_POST[ 'price_medium' ] ))	  	       
+        	update_post_meta( $image_id, 'price_medium', $_POST[ 'price_medium' ] );  
+		
+		if(isset($_POST[ 'price_large' ] ))      
+       		update_post_meta( $image_id, 'price_large', $_POST[ 'price_large' ] );        
+        
+		if(isset($_POST[ 'price_vector' ] )) 
+	   		update_post_meta( $image_id, 'price_vector', $_POST[ 'price_vector' ] );		
+		
+		if(isset($_POST[ 'price_zip' ] )) 
+			update_post_meta( $image_id, 'price_zip', $_POST[ 'price_zip' ] );        
+       
+	    if(isset($_POST[ 'discount_percent' ] )) 
+			update_post_meta( $image_id, 'discount_percent', $_POST[ 'discount_percent' ] );        
+        
+		if(isset($_POST[ 'exclusive' ] )) 
+			update_post_meta( $image_id, 'exclusive', $_POST[ 'exclusive' ] );		
+		
+		if(isset($_POST[ 'locked' ] )) 
+			update_post_meta( $image_id, 'locked', $_POST[ 'locked' ] );		
+		
+		if(isset($_POST[ 'live' ] )) 
+			update_post_meta( $image_id, 'live', $_POST[ 'live' ] );		
+		
+		//availability options symbiostock_  $size _available	
+		if(isset($_POST[ 'symbiostock_bloggee_available' ] )) 	
+			update_post_meta( $image_id, 'symbiostock_bloggee_available', $_POST[ 'symbiostock_bloggee_available' ] );	
+			
+		if(isset($_POST[ 'symbiostock_small_available' ] )) 			
+			update_post_meta( $image_id, 'symbiostock_small_available', $_POST[ 'symbiostock_small_available' ] );		
+		
+		if(isset($_POST[ 'symbiostock_medium_available' ] )) 
+			update_post_meta( $image_id, 'symbiostock_medium_available', $_POST[ 'symbiostock_medium_available' ] );
+			
+		if(isset($_POST[ 'symbiostock_large_available' ] )) 			
+			update_post_meta( $image_id, 'symbiostock_large_available', $_POST[ 'symbiostock_large_available' ] );
+			
+		if(isset($_POST[ 'symbiostock_vector_available' ] )) 			
+			update_post_meta( $image_id, 'symbiostock_vector_available', $_POST[ 'symbiostock_vector_available' ] );
+			
+		if(isset($_POST[ 'symbiostock_zip_available' ] )) 		
+			update_post_meta( $image_id, 'symbiostock_zip_available', $_POST[ 'symbiostock_zip_available' ] );	
 		
 		//rank and rating
-		update_post_meta( $post->ID, 'symbiostock_rank', $_POST[ 'symbiostock_rank' ] );	
-		update_post_meta( $post->ID, 'symbiostock_rating', $_POST[ 'symbiostock_rating' ] );	
+		if(isset($_POST[ 'symbiostock_rank' ] )) 
+			update_post_meta( $image_id, 'symbiostock_rank', $_POST[ 'symbiostock_rank' ] );
+		
+		if(isset($_POST[ 'symbiostock_rating' ] )) 		
+			update_post_meta( $image_id, 'symbiostock_rating', $_POST[ 'symbiostock_rating' ] );	
 		
 		//size info
 		
-		$size_info = symbiostock_change_image_sizes($post->ID, $_POST['symbiostock_bloggee_size'], $_POST['symbiostock_small_size'], $_POST['symbiostock_medium_size']);
-		update_post_meta($post->ID, 'size_info', $size_info );
+		if(isset($image_id) 
+		&& isset( $_POST['symbiostock_bloggee_size']) 
+		&& isset( $_POST['symbiostock_small_size']) 
+		&& isset( $_POST['symbiostock_medium_size'])){
+			$size_info = symbiostock_change_image_sizes($image_id, $_POST['symbiostock_bloggee_size'], $_POST['symbiostock_small_size'], $_POST['symbiostock_medium_size']);
+			update_post_meta($image_id, 'size_info', $size_info );
+		}
 		
-		//legal 
-		update_post_meta( $post->ID, 'symbiostock_model_released', $_POST[ 'symbiostock_model_released' ] );	
-		update_post_meta( $post->ID, 'symbiostock_property_released', $_POST[ 'symbiostock_property_released' ] );	
+		
+		//legal
+		if(isset($_POST[ 'symbiostock_model_released' ] )) 	 
+			update_post_meta( $image_id, 'symbiostock_model_released', $_POST[ 'symbiostock_model_released' ] );
+		
+		if(isset($_POST[ 'symbiostock_property_released' ] )) 		
+			update_post_meta( $image_id, 'symbiostock_property_released', $_POST[ 'symbiostock_property_released' ] );	
 		
 		//referral links
-		update_post_meta( $post->ID, 'symbiostock_referral_label_1', $_POST[ 'symbiostock_referral_label_1' ] );
-		update_post_meta( $post->ID, 'symbiostock_referral_label_2', $_POST[ 'symbiostock_referral_label_2' ] );	
-		update_post_meta( $post->ID, 'symbiostock_referral_label_3', $_POST[ 'symbiostock_referral_label_3' ] );	
-		update_post_meta( $post->ID, 'symbiostock_referral_label_4', $_POST[ 'symbiostock_referral_label_4' ] );	
-		update_post_meta( $post->ID, 'symbiostock_referral_label_5', $_POST[ 'symbiostock_referral_label_5' ] );	
-				
-		update_post_meta( $post->ID, 'symbiostock_referral_link_1', $_POST[ 'symbiostock_referral_link_1' ] );
-		update_post_meta( $post->ID, 'symbiostock_referral_link_2', $_POST[ 'symbiostock_referral_link_2' ] );	
-		update_post_meta( $post->ID, 'symbiostock_referral_link_3', $_POST[ 'symbiostock_referral_link_3' ] );	
-		update_post_meta( $post->ID, 'symbiostock_referral_link_4', $_POST[ 'symbiostock_referral_link_4' ] );	
-		update_post_meta( $post->ID, 'symbiostock_referral_link_5', $_POST[ 'symbiostock_referral_link_5' ] );				
+		if(isset($_POST[ 'symbiostock_referral_label_1' ] )) 			
+			update_post_meta( $image_id, 'symbiostock_referral_label_1', $_POST[ 'symbiostock_referral_label_1' ] );
+		
+		if(isset($_POST[ 'symbiostock_referral_label_2' ] )) 
+			update_post_meta( $image_id, 'symbiostock_referral_label_2', $_POST[ 'symbiostock_referral_label_2' ] );	
+		
+		if(isset($_POST[ 'symbiostock_referral_label_3' ] )) 
+			update_post_meta( $image_id, 'symbiostock_referral_label_3', $_POST[ 'symbiostock_referral_label_3' ] );	
+		
+		if(isset($_POST[ 'symbiostock_referral_label_4' ] )) 
+			update_post_meta( $image_id, 'symbiostock_referral_label_4', $_POST[ 'symbiostock_referral_label_4' ] );	
+		
+		if(isset($_POST[ 'symbiostock_referral_label_5' ] )) 
+			update_post_meta( $image_id, 'symbiostock_referral_label_5', $_POST[ 'symbiostock_referral_label_5' ] );	
+		
+		if(isset($_POST[ 'symbiostock_referral_link_1' ] )) 		
+			update_post_meta( $image_id, 'symbiostock_referral_link_1', $_POST[ 'symbiostock_referral_link_1' ] );
+		
+		if(isset($_POST[ 'symbiostock_referral_link_2' ] )) 
+			update_post_meta( $image_id, 'symbiostock_referral_link_2', $_POST[ 'symbiostock_referral_link_2' ] );
+		
+		if(isset($_POST[ 'symbiostock_referral_link_3' ] )) 		
+			update_post_meta( $image_id, 'symbiostock_referral_link_3', $_POST[ 'symbiostock_referral_link_3' ] );
+		
+		if(isset($_POST[ 'symbiostock_referral_link_4' ] )) 		
+			update_post_meta( $image_id, 'symbiostock_referral_link_4', $_POST[ 'symbiostock_referral_link_4' ] );	
+		
+		if(isset($_POST[ 'symbiostock_referral_link_5' ] )) 
+			update_post_meta( $image_id, 'symbiostock_referral_link_5', $_POST[ 'symbiostock_referral_link_5' ] );				
         
     }     
     
@@ -581,13 +647,13 @@ function symbiostock_image_manager_custom_columns( $column )
         
         case 'cat':
             
-            echo get_the_term_list( $post->ID, 'image-type', '', ', ', '' );
+            echo get_the_term_list( $image_id, 'image-type', '', ', ', '' );
             
             break;
         
         case 'tag':
             
-            echo get_the_term_list( $post->ID, 'image-tags', '', ', ', '' );
+            echo get_the_term_list( $image_id, 'image-tags', '', ', ', '' );
             
             break;
             
@@ -617,13 +683,6 @@ function register_symbiostock_image_submenu_page( )
 if(isset($_GET[ 'page' ])){
 	
 	if ( is_admin() && $_GET[ 'page' ] == 'symbiostock-upload-images' ) {
-		//do stuff to get jquery again, but from google for some reason...
-		
-		wp_deregister_script( 'jquery' );
-		
-		wp_register_script( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js' );
-		
-		wp_enqueue_script( 'jquery' );
 		
 		//get browserplus
 		
@@ -633,20 +692,20 @@ if(isset($_GET[ 'page' ])){
 		
 		//get plupload css
 		
-		wp_register_style( 'symbiostock_plupload_css', symbiostock_CLASSDIR . '/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css', false, '1.0.0' );
+		wp_register_style( 'symbiostock_plupload_css', WP_CONTENT_URL . '/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css', false, '1.0.0' );
 		
 		wp_enqueue_style( 'symbiostock_plupload_css' );
 		
 		
 		//Load plupload and all it's runtimes and finally the jQuery queue widget
 		
-		wp_register_script( 'symbiostock_plupload_full_js', symbiostock_CLASSDIR . '/plupload/js/plupload.full.js', array(
+		wp_register_script( 'symbiostock_plupload_full_js', WP_CONTENT_URL . '/plupload/js/plupload.full.js', array(
 			 'jquery' 
 		), '1.0', false );
 		
 		wp_enqueue_script( 'symbiostock_plupload_full_js' );
 		
-		wp_register_script( 'symbiostock_plupload_queue', symbiostock_CLASSDIR . '/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js', array(
+		wp_register_script( 'symbiostock_plupload_queue', WP_CONTENT_URL . '/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js', array(
 			 'jquery' 
 		), '1.0', false );
 		
@@ -660,12 +719,12 @@ if(isset($_GET[ 'page' ])){
 	?>
 <script type="text/javascript">
 	// Convert divs to queue widgets when the DOM is ready
-	$(function() {
+	jQuery(function($) {
 		$("#uploader").pluploadQueue({
 			// General settings
 			runtimes : 'gears,flash,silverlight,browserplus,html5',
 			url : '<?php
-			echo symbiostock_CLASSDIR;
+			echo WP_CONTENT_URL;
 	?>/plupload/uploads/upload.php',
 			max_file_size : '1000mb',
 			unique_names : false,
@@ -677,12 +736,12 @@ if(isset($_GET[ 'page' ])){
 	
 			// Flash settings
 			flash_swf_url : '<?php
-			echo symbiostock_CLASSDIR;
+			echo WP_CONTENT_URL;
 	?>/plupload/js/plupload.flash.swf',
 	
 			// Silverlight settings
 			silverlight_xap_url : '<?php
-			echo symbiostock_CLASSDIR;
+			echo WP_CONTENT_URL;
 	?>/plupload/js/plupload.silverlight.xap'
 		});
 	

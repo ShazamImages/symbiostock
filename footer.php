@@ -33,5 +33,6 @@
 </footer><!-- #colophon .site-footer -->
 <?php get_template_part('modal-login'); ?>
 <?php wp_footer(); ?>
+
 </body>
 </html>

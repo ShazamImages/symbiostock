@@ -1379,6 +1379,7 @@ class network_manager
 		fclose($fh);
 				
 	}
+
     //local search, responsible for generating local search results, returns xml.
     public function local_search( )
     {        
@@ -1513,6 +1514,8 @@ class network_manager
 			
 			}
 		
+		$local_query = apply_filters( 'ss_local_query', $local_query  );
+		
         $xml = symbiostock_xml_results( $local_query );
         
         $this->xml_results = $xml;
@@ -1642,7 +1645,7 @@ class network_manager
 
                 }
 
-                ajt_network_search_all( & $query_list, $this );
+                ajt_network_search_all( $query_list, $this );
 
             }//$symbiostock_use_network == 'true'
 }

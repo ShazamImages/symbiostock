@@ -6,6 +6,8 @@ function symbiostock_process_ajax( )
     if ( !isset( $_POST[ 'symbiostock_nonce' ] ) || !wp_verify_nonce( $_POST[ 'symbiostock_nonce' ], 'symbiostock-nonce' ) )
         return;
     
+	do_action('ss_admin_ajax');
+	
     //we make a switch statement for different ajax requests
     
     switch ( $_POST ) {

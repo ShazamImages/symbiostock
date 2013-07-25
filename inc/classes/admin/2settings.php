@@ -62,6 +62,9 @@ global $current_user;
                 &mdash; <?php echo sshelp('templates', 'Templates'); ?> </th>
         </tr>
     </thead>
+    
+    <?php do_action('ss_settings_table_top') ?>
+    
     <tr>
         <th scope="row">Header Logo<br /><?php echo sshelp('header_logo', 'Header Logo'); ?></th>
         <td><input class="symbiostock_settings" type="text" name="symbiostock_logo_link"  id="symbiostock_logo_link" value="<?php echo get_option('symbiostock_logo_link', symbiostock_LOGO  ); ?>" />
@@ -158,6 +161,9 @@ global $current_user;
         <td><textarea class="symbiostock_settings" name="symbiostock_customer_thank_you"  id="symbiostock_customer_thank_you"><?php echo stripslashes(get_option('symbiostock_customer_thank_you')); ?></textarea>
         </td>
     </tr>
+    
+    <?php do_action('ss_settings_table_bottom') ?>
+    
     <thead>
         <tr>
             <th colspan="2"> <strong>Credit Links</strong> &mdash; <?php echo sshelp('credit_links', 'About Credit Links'); ?> </th>
@@ -192,7 +198,9 @@ global $current_user;
             
             </td>
             
-    </tr>
+   		</tr>
+    
+   		
         <tr>
         <th scope="row">Footer Copyright Info</th>
         <td><label>Copyright name: <input type="text" class="symbiostock_settings" name="symbiostock_copyright_name"  id="symbiostock__copyright_name" value="<?php echo stripslashes(get_option('symbiostock_copyright_name', '')); ?>" /></label>          

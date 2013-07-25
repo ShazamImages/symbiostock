@@ -6,7 +6,7 @@
         </div>
     </form>
     <div class="info">    
-    <p><em>Want to use <strong>FTP</strong></em>? Here is the uploads folder:  <input size="140" type="text" onClick="this.select();" value="<?php echo get_theme_root() . "/symbiostock/inc/classes/plupload/uploads/"; ?>" /></p>
+    <p><em>Want to use <strong>FTP</strong></em>? Here is the uploads folder:  <input size="140" type="text" onClick="this.select();" value="<?php echo WP_CONTENT_DIR . "/plupload/uploads/"; ?>" /></p>
     
     <h3>Uploading Directions <strong>( .jpg .eps .png .zip )</strong></h3>
     

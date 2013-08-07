@@ -82,7 +82,7 @@ function symbiostock_image_manager_register( )
         'labels' => array(
 			'name' => _x( 'Image Keywords', 'taxonomy general name' ),
 			'singular_name' => _x( 'Keywords', 'taxonomy singular name' ),
-			'search_items' =>  __( 'Search Images' ),
+			'search_items' =>  __( 'Search Keywords' ),
 			'all_items' => __( 'All Image Keywords' ),
 			'edit_item' => __( 'Edit Image Keyword' ),
 			'update_item' => __( 'Update Image Keyword' ),
